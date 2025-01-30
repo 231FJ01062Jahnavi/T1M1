@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Author Showcase Grid</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Times New Roman', serif;
+      font-size: 18px;
+      background: linear-gradient(to right, #d8e2f4, #f3dce3);
+      color: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    h1 {
+      font-size: 4rem;
+      color: black;
+      font-style: italic;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(350px, 1fr)); /* Two authors per row */
+      gap: 30px;
+      width: 80%;
+      padding: 10px;
+      max-height: 80vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .grid-container::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .grid-container::-webkit-scrollbar-thumb {
+      background-color: #f3a6c8; /* Pink scroll thumb */
+      border-radius: 10px;
+    }
+
+    .grid-container::-webkit-scrollbar-track {
+      background-color: #fbe3eb; /* Lighter pink track */
+    }
+
+    .author-card {
+      background: #f4f8ff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      text-align: center;
+      opacity: 0.5;
+      transition: opacity 0.5s, transform 0.3s;
+    }
+
+    .author-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px; /* Square images */
+    }
+
+    .author-info h2 {
+      font-size: 1.8rem;
+      margin: 15px 0;
+      font-style: italic;
+    }
+
+    .author-card.active {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Authors Showcase</h1>
+  </header>
+
+  <section class="grid-container" id="gridContainer">
+    <div class="author-card" id="james-baldwin">
+      <img src="james.jpg" alt="James Baldwin">
+      <div class="author-info">
+        <h2>James Baldwin</h2>
+        <p>American novelist, playwright, and social critic exploring racial and class distinctions.</p>
+      </div>
+    </div>
+
+    <div class="author-card" id="toni-morrison">
+      <img src="toni.jpg" alt="Toni Morrison">
+      <div class="author-info">
+        <h2>Toni Morrison</h2>
+        <p>Renowned for 'Beloved,' she explored African American life and history.</p>
+      </div>
+    </div>
+
+    <div class="author-card" id="jane-austen">
+      <img src="jane.jpg" alt="Jane Austen">
+      <div class="author-info">
+        <h2>Jane Austen</h2>
+        <p>Famous for 'Pride and Prejudice,' her novels examine social class and relationships.</p>
+      </div>
+    </div>
+
+    <div class="author-card" id="fyodor-dostoevsky">
+      <img src="fd.jpg" alt="Fyodor Dostoevsky">
+      <div class="author-info">
+        <h2>Fyodor Dostoevsky</h2>
+        <p>Russian novelist known for 'Crime and Punishment,' exploring psychology and morality.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const authorCards = document.querySelectorAll('.author-card');
+    let options = { threshold: 0.5 };
+
+    let observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        } else {
+          entry.target.classList.remove('active');
+        }
+      });
+    }, options);
+
+    authorCards.forEach(card => {
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
+
+
+

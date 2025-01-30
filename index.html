@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Billing</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #e1f7e4, #a8d9a2);
+            color: #2a2a2a;
+        }
+
+        /* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(45deg, #a8d5ba, #8bc7a6); /* Gradient background */
+    padding: 15px 50px;
+}
+
+nav a {
+    color: black;  /* Black text color */
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+}
+
+nav a:hover {
+    background-color: #5a9a8d; /* Lighter shade for hover effect */
+    color: #f0fdf7;
+}
+
+
+        /* Header */
+        header {
+            
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+ font-family: 'Times New Roman', serif;
+}
+        }
+
+        h1 {
+            font-size: 4em;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .quote {
+            font-size: 2em;
+            font-style: italic;
+            color: #f0f7f4;
+        }
+
+        /* Main Content */
+        .container {
+            padding: 30px;
+        }
+
+        /* Dropdown Style */
+        .author-dropdown {
+            width: 250px;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: #e1f7e4;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        .author-dropdown:hover {
+            background-color: #66b18e;
+            color: white;
+        }
+
+        /* Dropdown Options (list) */
+        .author-dropdown option {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+
+        /* Book Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .book {
+            background: #f0f7f4;
+            border-radius: 15px;
+            padding: 15px;
+            transition: transform 0.3s, background 0.3s;
+            text-align: center;
+        }
+
+        .book:hover {
+            transform: scale(1.05);
+            background: #b7e0c3;
+        }
+
+        .book img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .book h3 {
+            font-size: 1.8em;
+            margin: 15px 0;
+            color: #66b18e;
+        }
+
+        .book button {
+            padding: 12px 25px;
+            background-color: #66b18e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        .book button:hover {
+            background-color: #76c7a1;
+        }
+
+        /* Cart and Receipt */
+        .cart {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .cart h2 {
+            font-size: 2em;
+        }
+
+        .receipt {
+            margin-top: 20px;
+            background-color: #f0f7f4;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .receipt.show {
+            display: block;
+        }
+
+        .receipt p {
+            font-size: 1.4em;
+            color: #66b18e;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .modal button {
+            padding: 12px 30px;
+            background-color: #66b18e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        .modal button:hover {
+            background-color: #76c7a1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #66b18e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2em;
+        }
+
+        footer a:hover {
+            color: #f0f7f4;
+        }
+
+    </style>
+
+<style>
+    /* Book Grid */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+        position: relative;
+    }
+
+    .grid::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('sj.webp');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.2;
+        z-index: -1; /* Ensure the background is behind the content */
+    }
+</style>
+
+</head>
+<body>
+<!-- Navbar -->
+<nav style="background: linear-gradient(to right, #A8D5BA, #6C9A8B); padding: 10px; border-radius: 5px;">
+    <a href="home.html" style="color: black; font-weight: bold; text-decoration: none; padding: 10px 20px; margin: 0 10px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;">Authors</a>
+    <a href="about.html" style="color: black; font-weight: bold; text-decoration: none; padding: 10px 20px; margin: 0 10px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;">About Us</a>
+    <a href="contact.html" style="color: black; font-weight: bold; text-decoration: none; padding: 10px 20px; margin: 0 10px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;">Contact</a>
+</nav>
+<!-- Header -->
+<!-- Header -->
+<header>
+    <div style="position: relative; display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <img src="1907.jpg" alt="Header Image" style="position: absolute; width: 100%; height: auto; object-fit: cover; opacity: 0.2;">
+        <div style="z-index: 10; text-align: center;">
+            <h1 style="color: black; font-size: 4em; margin: 0; letter-spacing: 2px;">BookHouse Billing</h1>
+            <p class="quote" style="font-size: 2em; font-style: italic; color: black;">
+                "A book is a dream that you hold in your hands." - Neil Gaiman
+            </p>
+        </div>
+    </div>
+</header>
+
+ <!-- Main Content -->
+<div class="container">
+    <label for="author" class="author-dropdown">Select Author:</label>
+    <select id="author" class="author-dropdown">
+        <option value="james-baldwin">James Baldwin</option>
+        <option value="toni-morrison">Toni Morrison</option>
+        <option value="jane-austen">Jane Austen</option>
+        <option value="fyodor-dostoevsky">Fyodor Dostoevsky</option>
+    </select>
+
+  <div class="grid" id="book-grid">
+    <!-- Books will be dynamically added here -->
+</div>
+
+    <div class="cart">
+        <h2>Your Cart</h2>
+        <button onclick="showReceipt()">View Receipt</button>
+        <div id="receipt" class="receipt">
+            <p>Your total: $0</p>
+        </div>
+    </div>
+</div>
+
+<div id="receipt" class="receipt">
+    <p class="total">Your total: $0</p>
+    <div class="books-list"></div>  <!-- List of books purchased -->
+</div>
+
+<!-- Modal for Book Details -->
+<div id="book-modal" class="modal">
+    <div class="modal-content">
+        <p id="book-price"></p>
+        <button onclick="addToCart()">Add to Cart</button>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 Book Billing. All rights reserved.</p>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+</footer>
+
+<script>
+    const booksData = {
+        "james-baldwin": [
+            { title: "Go Tell It on the Mountain", price: 15, image: "images/abc.jpg" },
+            { title: "Notes of a Native Son", price: 12, image: "images/Notes of a Native Son.jpg" },
+            { title: "Giovanni's Room", price: 12, image: "images/Giovanni's Room.jpg" },
+            { title: "Another Country", price: 12, image: "images/Another Country.jpg" },
+            { title: "Dark Days", price: 18, image: "images/Dark Days.jpg" },
+            { title: "Just Above My Head", price: 16, image: "images/Just Above My Head.jpg" },
+            { title: "If Beale Street Could Talk", price: 17, image: "images/IfBealeStreetCouldTalk.jpg" },
+            { title: "Nobody Knows My Name", price: 13, image: "images/NobodyKnowsMyName.jpg" }
+
+        ],
+        "toni-morrison": [
+            { title: "Beloved", price: 18, image: "images/07.jpg" },
+            { title: "The Bluest Eye", price: 14, image: "images/08.jpg" },
+            { title: "Song of Solomon", price: 14, image: "images/01.jpg" },
+            { title: "Sula", price: 12, image: "images/02.jpg" },
+            { title: "Tar Baby", price: 13, image: "images/03.jpg" },
+            { title: "Jazz", price: 15, image: "images/04.jpg" },
+            { title: "Paradise", price: 16, image: "images/05.jpg" },
+            { title: "Love", price: 17, image: "images/06.jpg" }
+        ],
+        "jane-austen": [
+            { title: "Pride and Prejudice", price: 10, image: "images/1.jpg" },
+            { title: "Sense and Sensibility", price: 11, image: "images/2.jpg" },
+            { title: "Emma", price: 11, image: "images/3.jpg" },
+            { title: "Mansfield Park", price: 13, image: "images/4.jpg" },
+            { title: "Northanger Abbey", price: 9, image: "images/5.jpg" },
+            { title: "Persuasion", price: 14, image: "images/6.jpg"},
+            { title: "Lady Susan", price: 8, image: "images/7.jpg" },
+            { title: "The Watsons", price: 7, image: "images/8.jpg" }
+        ],
+        "fyodor-dostoevsky": [
+         { title: "Crime and Punishment", price: 14, image: "images/c.jpg" },
+         { title: "The Brothers Karamazov", price: 16, image: "images/t.jpg" },
+         { title: "The Idiot", price: 15, image: "images/i.jpg" },
+         { title: "Notes from Underground", price: 12, image: "images/n.jpg" },
+         { title: "Demons", price: 18, image: "images/d.jpg" },
+         { title: "The Gambler", price: 13, image: "images/g.jpg" },
+         { title: "White Nights", price: 11, image: "images/w.jpg" },
+         { title: "The Eternal Husband", price: 10, image: "images/h.jpg" }
+
+
+        ]
+    };
+
+
+    let cartTotal = 0;
+
+    document.getElementById('author').addEventListener('change', loadBooks);
+
+    function loadBooks() {
+        const author = document.getElementById('author').value;
+        const grid = document.getElementById('book-grid');
+        grid.innerHTML = '';
+        booksData[author].forEach((book, index) => {
+            const bookElement = document.createElement('div');
+            bookElement.classList.add('book');
+            bookElement.innerHTML = `
+                <img src="${book.image}" alt="${book.title}">
+                <h3>${book.title}</h3>
+                <button onclick="showModal(${index}, '${author}')">View Price</button>
+            `;
+            grid.appendChild(bookElement);
+        });
+    }
+
+    function showModal(bookIndex, author) {
+        const book = booksData[author][bookIndex];
+        document.getElementById('book-price').textContent = `Price: $${book.price}`;
+        document.getElementById('book-modal').classList.add('show');
+    }
+
+    function closeModal() {
+        document.getElementById('book-modal').classList.remove('show');
+    }
+
+    function addToCart() {
+        const priceText = document.getElementById('book-price').textContent;
+        const price = parseFloat(priceText.replace('Price: $', ''));
+        cartTotal += price;
+        closeModal();
+        document.getElementById('receipt').classList.add('show');
+        document.querySelector('#receipt p').textContent = `Your total: $${cartTotal}`;
+    }
+
+    function showReceipt() {
+        document.getElementById('receipt').classList.add('show');
+    }
+
+    loadBooks(); // Load default books for the initial selection
+</script>
+
+</body>
+</html>
